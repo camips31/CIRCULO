@@ -1,0 +1,234 @@
+
+body { font-family: 'FreeMono'; font-size: 12pt;  }
+p { 	text-align: justify; margin-bottom: 4pt; margin-top:0pt;  }
+
+table {font-family: 'FreeMono'; font-size: 9pt; line-height: 1.2; 
+margin-top: 2pt; margin-bottom: 5pt;
+border-collapse: collapse;
+width: 100%;}
+
+td.top { vertical-align: top; }
+td.bottom { vertical-align: bottom; }
+
+.logo {
+    width: 450px;
+}
+
+td.well1 {
+    background: #e0e0e0;
+    padding: 20px;
+    text-align: right;
+    font-size: 13px;    
+    font-stretch: condensed;
+    text-transform: uppercase;    
+}
+
+td.well2 {
+    background: #fff;
+    padding: 10px;
+    text-align: right;
+    font-size: 10px;    
+    font-stretch: condensed;
+    text-transform: uppercase;
+}
+
+p.title-1 {
+    background: #fff;
+    padding: 5px 10px;
+    font-size: 20px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+}
+
+td.well3 {
+    width: 100%;
+    padding: 20px 0 20px 0;
+    text-align: left;
+    font-size: 20px;    
+    font-stretch: condensed;
+    text-transform: uppercase;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+    border-left: 1px solid #FFF;
+    border-right: 1px solid #FFF;    
+}
+
+span.billingActivity {
+    font-size: 14px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;   
+}
+
+td.title-billing {
+    padding: 5px 10px;
+    font-size: 12px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+td.title-billing2 {
+    font-size: 13px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+td.data-billing {
+    background: #fff;
+    padding: 5px 10px;
+    font-size: 14px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+}
+
+td.text-billing {
+    background: #fff;
+    padding: 5px 10px;
+    font-size: 12px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+}
+
+span.text-billing2 {
+    font-size: 13px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+td.width-30 {
+    width: 30px;
+}
+
+td.width-50 {
+    width: 50px;
+}
+
+td.width-100 {
+    width: 100px;
+}
+
+td.width-200 {
+    width: 200px;
+}
+
+td.width-300 {
+    width: 300px;
+}
+
+td.width-400 {
+    width: 400px;
+}
+
+td.width-500 {
+    width: 500px;
+}
+
+td.width-600 {
+    width: 600px;
+}
+
+td.width-700 {
+    width: 700px;
+}
+
+td.width-800 {
+    width: 800px;
+}
+
+tr.headerrowdetail {
+    background-color: #e0e0e0;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+    border-left: 1px solid #FFF;
+    border-right: 1px solid #FFF;
+}
+
+tr.rowdetail {
+    background-color: #FFF;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+    border-left: 1px solid #FFF;
+    border-right: 1px solid #FFF;    
+}
+
+td.title-detail {
+    padding: 7px;
+    font-size: 10px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+    font-weight: bolder;
+    border-left: 1px solid #FFF;
+}
+
+h3.h3-detail {
+    font-size: 12px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+
+td.padding-10 {
+    padding: 10px;
+}
+
+td.text-detail {
+    font-size: 10px;
+    text-align: left;
+    color: #000000;
+    font-stretch: condensed;
+    text-transform: uppercase;
+}
+
+td.text-table-desc {
+    font-size: 14px;
+    text-align: left;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+table.border-detail {
+    /*border-collapse: separate;
+    border-spacing: 2px 2px;*/
+    border-style: solid;
+    border-bottom-style: dotted;    
+}
+
+.myfixed1 {
+    font-size: 10px;
+    position: fixed;
+	overflow: visible; 
+	bottom: 0;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+p.system-billing-generatedData {
+    width: 100%;
+    border-top: 1px dotted #000000;
+    padding-top: 5px;
+    font-size: 8px !important;
+    position: fixed;
+	overflow: visible; 
+	bottom: 0;
+}
