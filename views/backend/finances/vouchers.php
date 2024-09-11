@@ -211,6 +211,36 @@
                                                     </div>
                                                 </div>                                             
                                             </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-0">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="5" id="radioTypeVoucher" name="radioTypeVoucher" />
+                                                        <label class="form-check-label" for="flexCheckChecked1">
+                                                            Pago Cuota Mensual con Tarjeta
+                                                        </label>
+                                                    </div>
+                                                </div>                                             
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-0">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="6" id="radioTypeVoucher" name="radioTypeVoucher" />
+                                                        <label class="form-check-label" for="flexCheckChecked1">
+                                                            Pago Cuota Mortuoria con Tarjeta
+                                                        </label>
+                                                    </div>
+                                                </div>                                             
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-0">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" value="7" id="radioTypeVoucher" name="radioTypeVoucher" />
+                                                        <label class="form-check-label" for="flexCheckChecked1">
+                                                            Pagos con Tarjeta
+                                                        </label>
+                                                    </div>
+                                                </div>                                             
+                                            </div>                                                                                                                                    
                                         </div>
                                     </div>
                                 </div>

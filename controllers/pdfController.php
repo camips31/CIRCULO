@@ -2267,7 +2267,6 @@ class pdfController extends IdEnController
 
     public function pdfPartners(){
                
-        $this->vDataPartnersByShare = $this->vPartnerData->getPartnersByShare();
         $this->vDataPartners = $this->vPartnerData->getPartners();
         $vLogoImageRoot = ROOT_APPLICATION.'views'.DIR_SEPARATOR.'layout'.DIR_SEPARATOR.DEFAULT_VIEW_LAYOUT.DIR_SEPARATOR.'backend'.DIR_SEPARATOR.'css'.DIR_SEPARATOR.'invoice'.DIR_SEPARATOR;
         //$vQRCodeImageRoot = ROOT_APPLICATION.'views'.DIR_SEPARATOR.'backend'.DIR_SEPARATOR.'billing'.DIR_SEPARATOR.'qr'.DIR_SEPARATOR;

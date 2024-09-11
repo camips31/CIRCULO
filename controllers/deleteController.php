@@ -65,6 +65,15 @@ class deleteController extends IdEnController
             //$this->vFinancesData->deleteVoucher($vCodVoucher);
             //echo 'success';
         }
+    }
+    
+    public function debt()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $vCodDebt = (int) $_POST['vCodDebt'];
+            $this->vPartnerData->deleteDebt($vCodDebt);
+            echo 'success';
+        }
     }    
 
 }

@@ -67,10 +67,15 @@
                             <form id="partners-form-debt-reg" class="form" action="#" autocomplete="off">
                                 <div class="card-body">
                                     <div class="fv-row form-group row mb-5">
-                                        <div class="col-md-6">
+                                    <div class="col-md-12">
                                             <label class="form-label">Socios<span class="text-danger">*</span></label>
                                             <select class="form-select mb-2 mb-md-0" name="vCodPartner" id="vCodPartner" data-control="select2" placeholder="Seleccione Socio">
                                             <option value="">Seleccionar Socio</option>
+                                            <option value="0">Todos los Socios Cuota Mortuoria (Presentes, Ausentes, Eméritos Presentes, Eméritos Ausentes)</option>
+                                            <option value="0">Todos los Socios Cuota Mensual (Presentes)</option>
+                                            <option value="0">Todos los Socios Cuota Mensual (Ausentes)</option>
+                                            <option value="0">Todos los Socios Cuota Mensual (Eméritos Presentes, Eméritos Ausentes)</option>
+                                            <option value="0">Todos los Socios Cuota Mensual (Especiales, Corporativos, Diplomáticos)</option>
                                             <?Php
                                             if (isset($this->DataPartners) && count($this->DataPartners)):
                                                 $vCount = 1;

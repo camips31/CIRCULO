@@ -127,7 +127,9 @@ class insertController extends IdEnController
             $vVoucherDesc = (string) $_POST['vVoucherDesc'];
             $vState = 0;//(int) $_POST['vState'];
             $vActive = 1;//(int) $_POST['vActive'];
-            
+
+            //echo $vRadioTypeVoucher.' - '.$vAmount.' - '.($vAmount - ($vAmount*(1.9/100)));
+            //SELECT * FROM `tb_cdlu_chartofaccount` WHERE `n_codchartofaccounts` in(275,139,142,210,52,140,141,146,58,12,55)
             if($vRadioTypeVoucher == 0){
                 $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, $vCodChartOfAccount, $vTAccount, $vVoucherType, $vDateVoucher, $vAmount, $vVoucherDesc, $vState, $vActive);
             } else if($vRadioTypeVoucher == 1){
@@ -147,7 +149,31 @@ class insertController extends IdEnController
                 $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, $vCodChartOfAccount, $vTAccount, $vVoucherType, $vDateVoucher, (($vAmount*100)/92), $vVoucherDesc, $vState, $vActive);
                 $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 140, $this->vFinancesData->getTAccountFromChartOfAccount(140), $vVoucherType, $vDateVoucher, ((($vAmount*100)/92)*0.03), $vVoucherDesc, $vState, $vActive);
                 $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 146, $this->vFinancesData->getTAccountFromChartOfAccount(146), $vVoucherType, $vDateVoucher, ((($vAmount*100)/92)*0.05), $vVoucherDesc, $vState, $vActive);
-            }
+            } else if($vRadioTypeVoucher == 5){
+                $vComision = ($vAmount*(1.9/100));
+                $vMontoSinComision = ($vAmount - $vComision);
+
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 58, $this->vFinancesData->getTAccountFromChartOfAccount(58), $vVoucherType, $vDateVoucher, $vComision, $vVoucherDesc, $vState, $vActive);
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 12, $this->vFinancesData->getTAccountFromChartOfAccount(12), $vVoucherType, $vDateVoucher, $vMontoSinComision, $vVoucherDesc, $vState, $vActive);
+
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 275, $this->vFinancesData->getTAccountFromChartOfAccount(275), $vVoucherType, $vDateVoucher, ($vAmount*0.03), $vVoucherDesc, $vState, $vActive);
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 139, $this->vFinancesData->getTAccountFromChartOfAccount(139), $vVoucherType, $vDateVoucher, ($vAmount*0.03), $vVoucherDesc, $vState, $vActive);
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 142, $this->vFinancesData->getTAccountFromChartOfAccount(142), $vVoucherType, $vDateVoucher, ($vAmount*0.13), $vVoucherDesc, $vState, $vActive);
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 210, $this->vFinancesData->getTAccountFromChartOfAccount(142), $vVoucherType, $vDateVoucher, ($vAmount - ($vAmount*0.13)), $vVoucherDesc, $vState, $vActive);
+            } else if($vRadioTypeVoucher == 6){
+                $vComision = ($vAmount*(1.9/100));
+                $vMontoSinComision = ($vAmount - $vComision);
+
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, $vCodChartOfAccount, $vTAccount, $vVoucherType, $vDateVoucher, $vMontoSinComision, $vVoucherDesc, $vState, $vActive);                
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 58, $this->vFinancesData->getTAccountFromChartOfAccount(58), $vVoucherType, $vDateVoucher, $vComision, $vVoucherDesc, $vState, $vActive);
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 55, $this->vFinancesData->getTAccountFromChartOfAccount(55), $vVoucherType, $vDateVoucher, $vAmount, $vVoucherDesc, $vState, $vActive);
+            } else if($vRadioTypeVoucher == 7){
+                $vComision = ($vAmount*(1.9/100));
+                $vMontoSinComision = ($vAmount - $vComision);
+
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 58, $this->vFinancesData->getTAccountFromChartOfAccount(58), $vVoucherType, $vDateVoucher, $vComision, $vVoucherDesc, $vState, $vActive);
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, 12, $this->vFinancesData->getTAccountFromChartOfAccount(12), $vVoucherType, $vDateVoucher, $vMontoSinComision, $vVoucherDesc, $vState, $vActive);
+            }                        
             echo 'success';
         }
     }
@@ -200,9 +226,23 @@ class insertController extends IdEnController
             $vState = 1;
             $vActive = 1;
 
-            //echo $vTypeDebt.'/'.$vMonth.'/'.$vDateDebt.'/'.$vAmountDebt.'/'.$vDescDebt;
+            if($vCodPartner == 0){
+                //echo 'todos los socios';
+                $this->vPartnersDebtsForDebts = $this->vPartnerData->getPartnersDebtsForDebts();
+                if (isset($this->vPartnersDebtsForDebts) && count($this->vPartnersDebtsForDebts)):
+                    for ($i = 0; $i < count($this->vPartnersDebtsForDebts); $i++):
+                        $vCodPartner = $this->vPartnersDebtsForDebts[$i]['n_codpartner'];
+                        $vCodDebt = $this->vPartnerData->insertDebt($vCodPartner,$vCodChartOfAccount,$vTypeDebt,$vMonth,$vDateDebt,$vAmountDebt,$vDescDebt,$vState,$vActive);
+                    endfor;
+                endif;                
+            } else {
+                $vCodDebt = $this->vPartnerData->insertDebt($vCodPartner,$vCodChartOfAccount,$vTypeDebt,$vMonth,$vDateDebt,$vAmountDebt,$vDescDebt,$vState,$vActive);
+            }
 
-            $vCodDebt = $this->vPartnerData->insertDebt($vCodPartner,$vCodChartOfAccount,$vTypeDebt,$vMonth,$vDateDebt,$vAmountDebt,$vDescDebt,$vState,$vActive);
+            //echo $vTypeDebt.'/'.$vMonth.'/'.$vDateDebt.'/'.$vAmountDebt.'/'.$vDescDebt;
+            //exit;
+
+            //$vCodDebt = $this->vPartnerData->insertDebt($vCodPartner,$vCodChartOfAccount,$vTypeDebt,$vMonth,$vDateDebt,$vAmountDebt,$vDescDebt,$vState,$vActive);
 
             echo 'success';
         }
@@ -247,13 +287,13 @@ class insertController extends IdEnController
             $vTAccount = $_POST['vTAccount'];
 
             //echo $vTotalSaldoDebe.' - '.$vTotalSaldoHaber.' - '.$vCodChartOfAccount.' - '.$vMonth.' - '.$vTAccount;
-            //exit;
 
             $vCodPartner = 0;
             $vCodBill = 0;
             $vCodReceipt = 0;
             
-            $vTAccount = (int) $this->vFinancesData->getTAccountFromChartOfAccount($vCodChartOfAccount);
+            //$vTAccount = (int) $this->vFinancesData->getTAccountFromChartOfAccount($vCodChartOfAccount);
+            $vTAccount = (int) $this->vFinancesData->getTAccountFromVoucher($vCodChartOfAccount);            
             $vNumChartOfAccount = (int) $this->vFinancesData->getNumChartOfAccount($vCodChartOfAccount);
 
             $vVoucherType = 4;
@@ -264,16 +304,10 @@ class insertController extends IdEnController
                 $vDateVoucher = date('Y-'.($vMonth+1).'-1');
             }
 
-            /*if($vTAccount == 1){
+            if($vTAccount == 1){
                 $vAmount = $vTotalSaldoDebe;
             } else if($vTAccount == 2){
                 $vAmount = $vTotalSaldoHaber;
-            }*/
-
-            if($vTotalSaldoDebe == 0){
-                $vAmount = $vTotalSaldoHaber;
-            } else if($vTotalSaldoHaber == 0){
-                $vAmount = $vTotalSaldoDebe;
             }
 
             if($vMonth == 1){
@@ -308,12 +342,133 @@ class insertController extends IdEnController
             
             //echo $vCodChartOfAccount.' - '.$vDateVoucher.' - '.$vVoucherType;
 
-            if($this->vFinancesData->getVoucherInitialBalances($vCodChartOfAccount, $vVoucherType, $vCloseMonth) == 0){
+            if($this->vFinancesData->getVoucherInitialBalances($vCodChartOfAccount, $vVoucherType, $vMonth+1) == 0){
                 $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, $vCodChartOfAccount, $vTAccount, $vVoucherType, $vDateVoucher, $vAmount, $vVoucherDesc, $vState, $vActive);
                 echo 'success';
             } else {
                 echo 'exists';
             }
         }
+    }
+
+    public function consolidateGlobalBalance($vMonth)
+    {
+        $vMonth = (int) $vMonth;
+        $this->vDataSumsAndBalances = $this->vFinancesData->getSumsAndBalances($vMonth);
+
+        
+        if(isset($this->vDataSumsAndBalances) && count($this->vDataSumsAndBalances)):
+            for($i=0;$i<count($this->vDataSumsAndBalances);$i++):
+
+                $vCodChartOfAccount = $this->vDataSumsAndBalances[$i]['n_codchartofaccounts'];
+                $vTAccount = $this->vDataSumsAndBalances[$i]['n_taccount'];               
+
+                $vCodPartner = 0;
+                $vCodBill = 0;
+                $vCodReceipt = 0;
+                
+                $vTAccount = (int) $this->vFinancesData->getTAccountFromVoucher($vCodChartOfAccount);            
+                $vNumChartOfAccount = (int) $this->vFinancesData->getNumChartOfAccount($vCodChartOfAccount);
+        
+                $vVoucherType = 4;
+        
+                if($vMonth == 12){
+                    $vDateVoucher = date('Y-01-01');
+                } else {
+                    $vDateVoucher = date('Y-'.($vMonth+1).'-1');
+                }
+        
+                if($vTAccount == 1){
+                    $vAmount = $vTotalSaldoDebe;
+                } else if($vTAccount == 2){
+                    $vAmount = $vTotalSaldoHaber;
+                }
+        
+                if($vMonth == 1){
+                    $vCloseMonth = 'Enero '.date('Y');
+                } else if($vMonth == 2){
+                    $vCloseMonth = 'Febrero '.date('Y'); 
+                } else if($vMonth == 3){
+                    $vCloseMonth = 'Marzo '.date('Y');
+               } else if($vMonth == 4){
+                    $vCloseMonth = 'Abril '.date('Y');
+                } else if($vMonth == 5){
+                    $vCloseMonth = 'Mayo '.date('Y');
+                } else if($vMonth == 6){
+                    $vCloseMonth = 'Junio '.date('Y');
+                } else if($vMonth == 7){
+                    $vCloseMonth = 'Julio '.date('Y');
+                } else if($vMonth == 8){
+                    $vCloseMonth = 'Agosto '.date('Y');
+                } else if($vMonth == 9){
+                    $vCloseMonth = 'Septiembre '.date('Y');
+                } else if($vMonth == 10){
+                    $vCloseMonth = 'Octubre '.date('Y');
+                } else if($vMonth == 11){
+                    $vCloseMonth = 'Noviembre '.date('Y');
+                } else if($vMonth == 12){
+                    $vCloseMonth = 'Diciembre '.date('Y');
+                }
+        
+                $vVoucherDesc = 'Saldo Cierre al Mes '.$vCloseMonth;
+                $vState = 1;
+                $vActive = 1;                
+
+                if($this->vDataSumsAndBalances[$i]['n_chartofaccountname'] == '1116011*'){
+                    $n_sumas_debe = $this->vDataSumsAndBalances[$i]['n_sumas_debe'];
+                    $n_sumas_haber = $this->vDataSumsAndBalances[$i]['n_sumas_haber'];
+                    $n_saldos_debe = $this->vDataSumsAndBalances[$i]['n_saldos_debe'];
+                    $n_saldos_haber = $this->vDataSumsAndBalances[$i]['n_saldos_haber'];
+
+                    $vMontoFinalSumasDebe = ($n_sumas_debe * 6.96);
+                    $vMontoFinalSumasHaber = ($n_sumas_haber * 6.96);
+                    $vMontoFinalSaldosDebe = ($n_saldos_debe * 6.96);
+                    $vMontoFinalSaldosHaber = ($n_saldos_haber * 6.96);																		
+                } else {
+                    $vMontoFinalSumasDebe = $this->vDataSumsAndBalances[$i]['n_sumas_debe'];
+                    $vMontoFinalSumasHaber = $this->vDataSumsAndBalances[$i]['n_sumas_haber'];
+                    $vMontoFinalSaldosDebe = $this->vDataSumsAndBalances[$i]['n_saldos_debe'];
+                    $vMontoFinalSaldosHaber = $this->vDataSumsAndBalances[$i]['n_saldos_haber'];
+                }																	
+
+                /*echo '<tr code="'.$this->vDataSumsAndBalances[$i]['n_chartofaccountname'].'"
+                          vTotalSaldoDebe="'.$vMontoFinalSaldosDebe.'"
+                          vTotalSaldoHaber="'.$vMontoFinalSaldosHaber.'"
+                          vCodChartOfAccount="'.$this->vDataSumsAndBalances[$i]['n_codchartofaccounts'].'"
+                          vMonth="'.$this->vDataSumsAndBalances[$i]['n_month'].'"
+                          vTAccount="'.$this->vDataSumsAndBalances[$i]['n_taccount'].'">';
+                    echo '<td>'.$vCount.'</td>';
+                    echo '<td>'.$this->vDataSumsAndBalances[$i]['n_chartofaccountname'].'</td>';
+                    echo '<td>'.$this->vDataSumsAndBalances[$i]['c_chartofaccountname'].'</td>';
+
+                    echo '<td>'.number_format($vMontoFinalSumasDebe,2,',','.').'</td>';
+                    echo '<td>'.number_format($vMontoFinalSumasHaber,2,',','.').'</td>';
+                    echo '<td>'.number_format($vMontoFinalSaldosDebe,2,',','.').'</td>';
+                    echo '<td>'.number_format($vMontoFinalSaldosHaber,2,',','.').'</td>';
+                    echo '<td></td>';
+                echo '</tr>';
+
+                $vSumasDebe = $vSumasDebe + $vMontoFinalSumasDebe;
+                $vSumasHaber = $vSumasHaber + $vMontoFinalSumasHaber;
+                $vSaldosDebe = $vSaldosDebe + $vMontoFinalSaldosDebe;
+                $vSaldosHaber =  $vSaldosHaber + $vMontoFinalSaldosHaber;*/
+
+                $vTotalSaldoDebe = $vMontoFinalSaldosDebe;
+                $vTotalSaldoHaber = $vMontoFinalSaldosHaber;
+                                
+
+                $vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, $vCodChartOfAccount, $vTAccount, $vVoucherType, $vDateVoucher, $vAmount, $vVoucherDesc, $vState, $vActive);
+
+            endfor;
+        endif;
+        
+        $this->redirect('finances/sumsAndBalances/'.$vMonth);
+
+        //if($this->vFinancesData->getVoucherInitialBalances($vCodChartOfAccount, $vVoucherType, $vCloseMonth) == 0){
+            //$vCodVoucher = $this->vFinancesData->insertVoucher($vCodPartner, $vCodBill, $vCodReceipt, $vCodChartOfAccount, $vTAccount, $vVoucherType, $vDateVoucher, $vAmount, $vVoucherDesc, $vState, $vActive);
+            //echo 'success';
+        //} else {
+        //    echo 'exists';
+        //}
     }    
 }

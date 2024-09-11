@@ -61,12 +61,6 @@ class partnersController extends IdEnController
                 $this->vView->vDebtsLits = $this->vPartnerData->getDebts();
                 $this->vView->visualize('debts');    
             }
-            public function debtorPartners()
-            {
-                $this->vDataPartners = $this->vPartnerData->getPartnersGroupDebts();
-                $this->vDataPartnersDebt = $this->vPartnerData->getPartnersDebt($this->vDataPartners[$i]['n_codpartner']);
-                $this->vView->visualize('debtorPartners');    
-            }            
             public function debtReconciliation()
             {
                 $this->vView->vChartOfAccountList = $this->vFinancesData->getChartOfAccountList();
@@ -96,6 +90,26 @@ class partnersController extends IdEnController
                 $this->vView->vDataVouchersPartner = $this->vPartnerData->getVouchersFromCodPartner();
                 
                 $this->vView->visualize('partnerPayOffDebt');
-            }                                   
+            }
+            
+            public function monthlyPayments($vMonth = 0)
+            {                
+                if($vMonth == 0){
+                    $vMonth = idate('m');
+                } else {
+                    $vMonth = (int) $vMonth;
+                }                
+                $this->vView->vDataGroupPartnerMonthlyPayments = $this->vPartnerData->getGroupPartnerMonthlyPayments();
+                $this->vView->vDataPartnerMonthlyPayments = $this->vPartnerData->getPartnerMonthlyPayments($vMonth);
+                
+                $this->vView->visualize('monthlyPayments');
+            }
+
+            public function partnersByCategory()
+            {                            
+                $this->vView->vDataPartnersGroupCategory = $this->vPartnerData->getPartnersGroupCategory();                
+                $this->vView->visualize('partnersByCategory');
+            }            
+                        
     }
 ?>

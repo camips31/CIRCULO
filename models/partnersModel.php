@@ -7,16 +7,28 @@ class partnersModel extends IdEnModel
 			}
 
         /* BEGIN SELECT STATEMENT QUERY  */
+        public function getPartnersGroupCategory(){
+            $vResultPartnersGroupCategory = $this->vDataBase->query("SELECT tb_cdlu_partners.n_categoria, COUNT(tb_cdlu_partners.n_codpartner) AS n_num_partners FROM tb_cdlu_partners GROUP BY tb_cdlu_partners.n_categoria;");
+            return $vResultPartnersGroupCategory->fetchAll();
+            $vResultPartnersGroupCategory->close();            
+        }
+
         public function getPartners(){
             $vResultPartners = $this->vDataBase->query("SELECT tb_cdlu_partners.* FROM tb_cdlu_partners;");
             return $vResultPartners->fetchAll();
             $vResultPartners->close();            
         }
-        public function getPartnersByShare(){
-            $vResultPartners = $this->vDataBase->query("SELECT tb_cdlu_partners.n_categoria, COUNT(*) FROM tb_cdlu_partners GROUP BY tb_cdlu_partners.n_categoria;");
+
+        public function getPartnersDebtsForDebts(){
+            $vResultPartners = $this->vDataBase->query("SELECT *
+                                                        FROM `tb_cdlu_partners`
+                                                        WHERE `n_categoria` IN(1,2,4,5)
+                                                        AND `n_codpartner` NOT IN(SELECT `n_codpartner` FROM `tb_cdlu_annualpayments`);");
             return $vResultPartners->fetchAll();
             $vResultPartners->close();            
-        }        
+        }         
+        
+
         /*public function getPartnersDebts(){
             $vResultPartners = $this->vDataBase->query("SELECT
             tb_cdlu_debts.n_codpartner,
@@ -53,6 +65,20 @@ GROUP BY tb_cdlu_debts.n_codpartner");
             return $vResultPartnersGroupDebts->fetchAll();
             $vResultPartnersGroupDebts->close();            
         }
+
+        public function getSuspendedPartners(){
+            $vResultPartnersGroupDebts = $this->vDataBase->query("SELECT
+tb_cdlu_debts.n_codpartner,
+(SELECT tb_cdlu_partners.n_numaccion FROM tb_cdlu_partners WHERE tb_cdlu_partners.n_codpartner = tb_cdlu_debts.n_codpartner) AS n_numaccion,
+(SELECT tb_cdlu_partners.n_categoria FROM tb_cdlu_partners WHERE tb_cdlu_partners.n_codpartner = tb_cdlu_debts.n_codpartner) AS n_categoria,
+(SELECT tb_cdlu_partners.t_nombres FROM tb_cdlu_partners WHERE tb_cdlu_partners.n_codpartner = tb_cdlu_debts.n_codpartner) AS t_nombres
+FROM tb_cdlu_debts
+WHERE tb_cdlu_debts.n_status = 1
+AND tb_cdlu_debts.n_active = 1
+GROUP BY tb_cdlu_debts.n_codpartner");
+            return $vResultPartnersGroupDebts->fetchAll();
+            $vResultPartnersGroupDebts->close();            
+        }        
         public function getPartnersDebts(){
             $vResultPartners = $this->vDataBase->query("SELECT
             tb_cdlu_debts.n_coddebt,
@@ -100,7 +126,8 @@ GROUP BY tb_cdlu_debts.n_codpartner");
             tb_cdlu_voucher.d_voucherdate,
             tb_cdlu_voucher.n_voucheramount,
             tb_cdlu_voucher.c_voucherdesc
-        FROM tb_cdlu_voucher;");
+        FROM tb_cdlu_voucher
+            WHERE tb_cdlu_voucher.n_codchartofaccounts in(12,14,15);");
             return $vResultVouchersFromAccountSeat->fetchAll();
             $vResultVouchersFromAccountSeat->close();
         }
@@ -275,6 +302,58 @@ FROM tb_cdlu_debts
                 AND tb_cdlu_voucher.n_codpartner = $vCodPartner;");
             return $vResultPartnersDebt->fetchAll();
             $vResultPartnersDebt->close();            
+        }
+        
+        public function getGroupPartnerMonthlyPayments(){
+            $vResultPartnersDebt = $this->vDataBase->query("SELECT
+MONTH(tb_cdlu_voucher.d_voucherdate) AS n_month,
+CASE
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 1 THEN 'ENERO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 2 THEN 'FEBRERO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 3 THEN 'MARZO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 4 THEN 'ABRIL'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 5 THEN 'MAYO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 6 THEN 'JUNIO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 7 THEN 'JULIO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 8 THEN 'AGOSTO'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 9 THEN 'SEPTIEMBRE'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 10 THEN 'OCTUBRE'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 11 THEN 'NOVIEMBRE'
+    WHEN MONTH(tb_cdlu_voucher.d_voucherdate) = 12 THEN 'DICIEMBRE'
+END AS c_monthname
+FROM tb_cdlu_voucher, tb_cdlu_partners
+WHERE tb_cdlu_voucher.n_codpartner = tb_cdlu_partners.n_codpartner
+AND tb_cdlu_voucher.n_codchartofaccounts in(12, 14, 15)
+GROUP BY MONTH(tb_cdlu_voucher.d_voucherdate)
+ORDER BY tb_cdlu_partners.n_codpartner ASC");
+            return $vResultPartnersDebt->fetchAll();
+            $vResultPartnersDebt->close();            
+        }
+        
+        public function getPartnerMonthlyPayments($vMonth){
+            $vMonth = (int) $vMonth;
+            $vResultPartnersDebt = $this->vDataBase->query("SELECT
+                                                                tb_cdlu_voucher.n_codvoucher,
+                                                                tb_cdlu_voucher.n_codaccountingseat,
+                                                                tb_cdlu_voucher.n_codbill,
+                                                                tb_cdlu_voucher.n_codreceipt,
+                                                                tb_cdlu_voucher.n_codchartofaccounts,
+                                                                (SELECT tb_cdlu_chartofaccount.n_chartofaccountname FROM tb_cdlu_chartofaccount WHERE tb_cdlu_chartofaccount.n_codchartofaccounts = tb_cdlu_voucher.n_codchartofaccounts) as n_chartofaccountname,
+                                                                (SELECT tb_cdlu_chartofaccount.c_chartofaccountname FROM tb_cdlu_chartofaccount WHERE tb_cdlu_chartofaccount.n_codchartofaccounts = tb_cdlu_voucher.n_codchartofaccounts) as c_chartofaccountname,
+                                                                tb_cdlu_voucher.n_voucheramount,
+                                                                tb_cdlu_voucher.c_voucherdesc,
+                                                                tb_cdlu_voucher.n_vouchertype,
+                                                                tb_cdlu_voucher.d_voucherdate,
+                                                                tb_cdlu_partners.n_codpartner,
+                                                                tb_cdlu_partners.n_numaccion,
+                                                                tb_cdlu_partners.t_nombres
+                                                            FROM tb_cdlu_voucher, tb_cdlu_partners
+                                                                WHERE tb_cdlu_voucher.n_codpartner = tb_cdlu_partners.n_codpartner
+                                                                    AND tb_cdlu_voucher.n_codchartofaccounts in(12, 14, 15)
+                                                                    AND MONTH(tb_cdlu_voucher.d_voucherdate) = $vMonth
+                                                                        ORDER BY tb_cdlu_partners.n_codpartner ASC");
+            return $vResultPartnersDebt->fetchAll();
+            $vResultPartnersDebt->close();            
         }        
         
 		public function insertPartner($vCodUser,$vNumAccion,$vCategoria,$vFechaIngreso,$vNombres,$vFechaNacimiento,$vCarnetIdentidad, $vSexo, $vCelular, $vMail, $vCiudad, $vNombreNit, $vNIT, $vStatus, $vActive){
@@ -422,12 +501,18 @@ FROM tb_cdlu_debts
 			}    
         /* END UPDATE STATEMENT QUERY  */     
 
-    public function deletePartner($vCodPartner)
-    {
-        $vCodPartner = (int) $vCodPartner;
-
-        $this->vDataBase->query("DELETE FROM tb_cdlu_partners WHERE tb_cdlu_partners.n_codpartner = $vCodPartner;");
-    }
+        public function deletePartner($vCodPartner)
+        {
+            $vCodPartner = (int) $vCodPartner;
+    
+            $this->vDataBase->query("DELETE FROM tb_cdlu_partners WHERE tb_cdlu_partners.n_codpartner = $vCodPartner;");
+        }
+        public function deleteDebt($vCodDebt)
+        {
+            $vCodDebt = (int) $vCodDebt;
+    
+            $this->vDataBase->query("DELETE FROM tb_cdlu_debts WHERE tb_cdlu_debts.n_coddebt = $vCodDebt;");
+        }        
     /* END DELETE STATEMENT QUERY  */        
     }    
 ?>

@@ -46,14 +46,23 @@ class dashboardController extends IdEnController
 			
 		public function index(){
 
+                $vMonth = idate('m');
+
                 $this->vView->DataLastSession = $this->vCtrl->getLastSession($this->vCodProfileLogged,$this->vCodUserLogged);
                 $this->vView->DataPartners = $this->vPartnerData->getPartners();
-                $this->vView->DataTotalAmountBills = $this->vFinancesData->getTotalAmountBills();
-                $this->vView->DataBills = $this->vFinancesData->getBills();
-                $this->vView->DataChartOfAccount = $this->vFinancesData->getChartOfAccountList();
 
-                $vMonth = idate('m')-1;
+                $this->vView->DataTotalBankAmount = $this->vFinancesData->getTotalBankAmount();
+
+                $this->vView->DataBills = $this->vFinancesData->getCurrentMonthlyBilling($vMonth);
+                $this->vView->DataTotalAmountBills = $this->vFinancesData->getCurrentMonthTotalAmountBills($vMonth);
+                
+                $this->vView->DataReceipts = $this->vFinancesData->getCurrentMonthlyReceipts($vMonth);
+                $this->vView->DataTotalAmountReceipts = $this->vFinancesData->getCurrentMonthTotalAmountReceipts($vMonth);
+                
+                $this->vView->DataChartOfAccount = $this->vFinancesData->getChartOfAccountList();                
                 $this->vView->vTotalAccountingEntries = $this->vFinancesData->getTotalAccountingEntries($vMonth);
+
+                $this->vView->DataReceiptsList = $this->vFinancesData->getReceiptsList();
 
                 if($vMonth == 1){
                     $vMonth = 'Enero '.idate('Y');

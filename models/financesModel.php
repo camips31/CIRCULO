@@ -9,13 +9,30 @@ class financesModel extends IdEnModel
 
     /* BEGIN SELECT STATEMENT QUERY  */
 
+    public function getTotalBankAmount()
+    {
+        $vResultTotalBankAmount = $this->vDataBase->query("SELECT
+                                                                    (SELECT tb_cdlu_chartofaccount.n_chartofaccountname
+                                                                        FROM tb_cdlu_chartofaccount 
+                                                                            WHERE tb_cdlu_chartofaccount.n_codchartofaccounts = tb_cdlu_voucher.n_codchartofaccounts) AS n_chartofaccountname,
+                                                                    (SELECT tb_cdlu_chartofaccount.c_chartofaccountname
+                                                                        FROM tb_cdlu_chartofaccount
+                                                                            WHERE tb_cdlu_chartofaccount.n_codchartofaccounts = tb_cdlu_voucher.n_codchartofaccounts) AS c_chartofaccountname,
+                                                                    SUM(tb_cdlu_voucher.n_voucheramount) AS n_amount
+                                                                FROM tb_cdlu_voucher
+                                                                    WHERE tb_cdlu_voucher.n_codchartofaccounts IN(12,14)
+                                                                        GROUP BY tb_cdlu_voucher.n_codchartofaccounts;");
+        return $vResultTotalBankAmount->fetchAll();
+        $vResultTotalBankAmount->close();
+    }
+
     public function getChartOfAccountDoubleMatch($vCodChartOfAccounts)
     {
         $vCodChartOfAccounts = (int) $vCodChartOfAccounts;
         $vResultChartOfAccountDoubleMatch = $this->vDataBase->query("SELECT tb_cdlu_chartofaccount.n_taccount FROM tb_cdlu_chartofaccount WHERE tb_cdlu_chartofaccount.n_codchartofaccounts = $vCodChartOfAccounts;");
         return $vResultChartOfAccountDoubleMatch->fetchColumn();
         $vResultChartOfAccountDoubleMatch->close();
-    }
+    }    
 
     public function getChartOfAccountList()
     {
@@ -102,7 +119,15 @@ class financesModel extends IdEnModel
         $vResultTAccountFromChartOfAccount = $this->vDataBase->query("SELECT tb_cdlu_chartofaccount.n_taccount FROM tb_cdlu_chartofaccount WHERE n_codchartofaccounts = $vCodeChartofAccount;");
         return $vResultTAccountFromChartOfAccount->fetchColumn();
         $vResultTAccountFromChartOfAccount->close();
-    } 
+    }
+    
+    public function getTAccountFromVoucher($vCodeChartofAccount)
+    {
+        $vCodeChartofAccount = (int) $vCodeChartofAccount;
+        $vResultTAccountFromChartOfAccount = $this->vDataBase->query("SELECT tb_cdlu_voucher.n_taccount FROM tb_cdlu_voucher WHERE tb_cdlu_voucher.n_codchartofaccounts = $vCodeChartofAccount;");
+        return $vResultTAccountFromChartOfAccount->fetchColumn();
+        $vResultTAccountFromChartOfAccount->close();
+    }    
     
     public function getNumChartOfAccount($vCodeChartofAccount)
     {
@@ -118,6 +143,22 @@ class financesModel extends IdEnModel
         return $vResultBills->fetchAll();
         $vResultBills->close();
     }
+
+    public function getCurrentMonthlyBilling($vMonth)
+    {
+        $vMonth = (int) $vMonth;
+        $vResultCurrentMonthlyBilling = $this->vDataBase->query("SELECT * FROM tb_cdlu_bills WHERE MONTH(tb_cdlu_bills.d_datebill) = $vMonth;");
+        return $vResultCurrentMonthlyBilling->fetchAll();
+        $vResultCurrentMonthlyBilling->close();
+    }
+    
+    public function getCurrentMonthlyReceipts($vMonth)
+    {
+        $vMonth = (int) $vMonth;
+        $vResultCurrentMonthlyReceipts = $this->vDataBase->query("SELECT * FROM tb_cdlu_receipts WHERE MONTH(tb_cdlu_receipts.d_datereceipt) = $vMonth;");
+        return $vResultCurrentMonthlyReceipts->fetchAll();
+        $vResultCurrentMonthlyReceipts->close();
+    }    
 
     public function getBillsForVouchers()
     {
@@ -142,6 +183,23 @@ class financesModel extends IdEnModel
         return $vResultBills->fetchColumn();
         $vResultBills->close();
     }
+
+    public function getCurrentMonthTotalAmountBills($vMonth)
+    {
+        $vMonth = (int) $vMonth;
+        $vResultCurrentMonthTotalAmountBills = $this->vDataBase->query("SELECT SUM(tb_cdlu_bills.n_totalbill) FROM tb_cdlu_bills WHERE MONTH(tb_cdlu_bills.d_datebill) = $vMonth;");
+        return $vResultCurrentMonthTotalAmountBills->fetchColumn();
+        $vResultCurrentMonthTotalAmountBills->close();
+    }
+
+    public function getCurrentMonthTotalAmountReceipts($vMonth)
+    {
+        $vMonth = (int) $vMonth;
+        $vResultCurrentMonthTotalAmountReceipts = $this->vDataBase->query("SELECT SUM(tb_cdlu_receipts.n_totalreceipt) FROM tb_cdlu_receipts WHERE MONTH(tb_cdlu_receipts.d_datereceipt) = $vMonth;");
+        return $vResultCurrentMonthTotalAmountReceipts->fetchColumn();
+        $vResultCurrentMonthTotalAmountReceipts->close();
+    }
+
     public function getTotalAccountingEntries($vMonth)
     {
         $vMonth = (int) $vMonth;
@@ -157,7 +215,7 @@ class financesModel extends IdEnModel
         $vCodUser = (int) $vCodUser;
         $vResultReceipts = $this->vDataBase->query("SELECT
                                                         tb_cdlu_receipts.n_codreceipt,
-                                                        IFNULL((SELECT tb_cdlu_voucher.n_codvoucher FROM tb_cdlu_voucher WHERE tb_cdlu_voucher.n_codreceipt = tb_cdlu_receipts.n_codreceipt), 0)AS n_codvoucher,
+                                                        IFNULL((SELECT tb_cdlu_voucher.n_codvoucher FROM tb_cdlu_voucher WHERE tb_cdlu_voucher.n_codreceipt = tb_cdlu_receipts.n_codreceipt AND tb_cdlu_voucher.n_status = 0), 0)AS n_codvoucher,
                                                         tb_cdlu_receipts.n_coduser,
                                                         tb_cdlu_receipts.n_numreceipt,
                                                         tb_cdlu_receipts.n_typereceipt,

@@ -50,6 +50,7 @@
                                         <th data-priority="3">Categoria</th>
                                         <th>Fecha Ingreso</th>
                                         <th data-priority="2">Nombre Completo</th>
+                                        <th>Estado</th>
                                         <th>Fecha Nacimiento</th>
                                         <th>Carnet de Identidad</th>
                                         <th>Sexo</th>
@@ -58,7 +59,6 @@
                                         <th>Ciudad</th>
                                         <th>Nombre</th>
                                         <th>NIT</th>
-                                        <th>Estado</th>
                                         <th data-priority="1">acciones</th>
                                         <!--end::Table row-->
                                     </thead>

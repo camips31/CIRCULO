@@ -88,11 +88,11 @@
                                                 <select class="form-select mb-2 mb-md-0" name="vCodTypeReceipt" id="vCodTypeReceipt" data-control="select2" placeholder="Seleccione Factura">
                                                     <option value="">Seleccionar Tipo Recibo</option>
                                                     <option value="1">Montos Iniciales</option>
-                                                    <option value="2">Cuota Mensual</option>
+                                                    <option value="2">Cuota Extraordinaria</option>
                                                     <option value="3">Cuota Mortuoria</option>
                                                     <option value="4">Cuota Participación</option>
-                                                    <option value="5">Cuota Ingreso</option>
-                                                    <option value="6">Compra Libro</option>
+                                                    <!--<option value="5">Cuota Ingreso</option>
+                                                    <option value="6">Compra Libro</option>-->
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
@@ -142,7 +142,7 @@
                             <!--begin::Search-->
                             <div class="d-flex align-items-center position-relative my-1">
                                 <span class="svg-icon fs-1 position-absolute ms-4"></span>
-                                <input type="text" id="searchVoucherAccountingSeats" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Búsqueda..." />
+                                <input type="text" id="searchReceipts" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Búsqueda..." />
                             </div>
                             <!--end::Search-->  
                         </div>
