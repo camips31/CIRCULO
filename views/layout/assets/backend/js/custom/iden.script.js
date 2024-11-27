@@ -4,7 +4,7 @@
 var PlatformURLSystemAccess = function() {
     
     //localStorage.setItem(globalURLCirculo, 'https://circulodelaunion.ideas-envision.com/');
-    localStorage.setItem(globalURLCirculo, 'http://localhost/circulodelaunion.ideas-envision.com/');    
+    localStorage.setItem(globalURLCirculo, 'http://localhost/IDEAS-ENVISION/circulodelaunion.ideas-envision.com/');    
     var globalURLCirculo = localStorage.getItem(globalURLCirculo);    
 
 

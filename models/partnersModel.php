@@ -512,7 +512,7 @@ ORDER BY tb_cdlu_partners.n_codpartner ASC");
             $vCodDebt = (int) $vCodDebt;
     
             $this->vDataBase->query("DELETE FROM tb_cdlu_debts WHERE tb_cdlu_debts.n_coddebt = $vCodDebt;");
-        }        
+        }       
     /* END DELETE STATEMENT QUERY  */        
     }    
 ?>

@@ -23,6 +23,7 @@ class selectController extends IdEnController
         $this->vUsersData = $this->LoadModel('users');
         $this->vPartnerData = $this->LoadModel('partners');
         $this->vFinancesData = $this->LoadModel('finances');
+        $this->vFacturation = $this->LoadModel('facturation');
 
         /**********************************/
         /* BEGIN AUTHENTICATE USER ACTIVE */
@@ -165,8 +166,7 @@ class selectController extends IdEnController
             echo json_encode($dataset);
         }    
 
-    public function dataPartners()
-    {
+    public function dataPartners(){
         $this->DataPartners = $this->vPartnerData->getPartners();
         foreach ($this->DataPartners as $row) {
             $data[] = array(               
@@ -185,6 +185,32 @@ class selectController extends IdEnController
                 "t_nit" => $row['t_nit'],
                 "n_status" => $row['n_status'],
                 "n_active" => $row['n_active'],
+            );
+        }
+
+        $dataset = array(
+            "draw" => 1,
+            "totalrecords" => count($data),
+            "totaldisplayrecords" => count($data),
+            "data" => $data,
+        );
+
+        echo json_encode($dataset);
+    }
+
+    //data de la tabla clientes para el listado de clientes
+    public function dataClients(){
+        $this->DataClients = $this->vFacturation->getClients();
+        foreach ($this->DataClients as $row) {
+            $data[] = array(               
+                'nombre_rsocial'    => $row['nombre_rsocial'],
+				'apellidos_sigla'   => $row['apellidos_sigla'],
+				'id_documento'      => $row['id_documento'],
+				'nit_ci'            => $row['nit_ci'],
+				'correo'            => $row['correo'],
+				'movil'             => $row['movil'],
+				'direccion'         => $row['direccion'],
+				'descripcion'       => $row['descripcion'],
             );
         }
 
@@ -373,4 +399,76 @@ class selectController extends IdEnController
                 echo $vReceiptNumber;
     
             }
+
+            //data de la tabla Brand para el listado de marcas
+            public function dataBrands(){
+                $this->DataBrands = $this->vFacturation->getBrands();
+                foreach ($this->DataBrands as $row) {
+                    $data[] = array(         
+                        'codigo'            => $row['codigo'],
+                        'descripcion'       => $row['descripcion'],
+                        'garantia'          => $row['garantia'],
+                        'tiempo_garantia'   => $row['tiempo_garantia'],
+                        'apiestado'         => $row['apiestado'],
+                    );
+                }
+
+                $dataset = array(
+                    "draw" => 1,
+                    "totalrecords" => count($data),
+                    "totaldisplayrecords" => count($data),
+                    "data" => $data,
+                );
+
+                echo json_encode($dataset);
+            }
+
+
+              //data de la tabla Category para el listado de categorias
+              public function dataCategories(){
+                $this->DataCategories = $this->vFacturation->getCategory();
+                foreach ($this->DataCategories as $row) {
+                    $data[] = array(         
+                        'codigo'            => $row['codigo'],
+                        'descripcion'       => $row['descripcion'],
+                        'imagen'          => $row['imagen'],
+                        'apiestado'   => $row['apiestado'],
+                    );
+                }
+
+                $dataset = array(
+                    "draw" => 1,
+                    "totalrecords" => count($data),
+                    "totaldisplayrecords" => count($data),
+                    "data" => $data,
+                );
+
+                echo json_encode($dataset);
+            }
+
+             //data de la tabla Branch para el listado de sucursales
+            //  public function dataBranch(){
+            //     $this->DataBranchs = $this->vFacturation->M_listar_punto_venta(1);
+            //     foreach ($this->DataBranchs as $row) {
+            //         $data[] = array(         
+            //             'cod_punto_venta'   => $row['cod_punto_venta'],
+            //             'nombre'            => $row['nombre'],
+            //             'descripcion'       => $row['descripcion'],
+            //             'tipo_venta'        => $row['tipo_venta'],
+            //             'cuis'              => $row['cuis'],
+            //             'fecvencuis'        => $row['fecvencuis'],
+            //             'cufs'          => $row['cufs'],
+            //             'fecvencufd'        => $row['fecvencufd'],
+            //         );
+            //     }
+
+            //     $dataset = array(
+            //         "draw" => 1,
+            //         "totalrecords" => count($data),
+            //         "totaldisplayrecords" => count($data),
+            //         "data" => $data,
+            //     );
+
+            //     echo json_encode($dataset);
+            // }
 }

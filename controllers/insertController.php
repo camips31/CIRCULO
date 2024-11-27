@@ -19,6 +19,7 @@ class insertController extends IdEnController
         $this->vMenuData = $this->LoadModel('menu');
         $this->vPartnerData = $this->LoadModel('partners');
         $this->vFinancesData = $this->LoadModel('finances');
+        $this->vFacturation = $this->LoadModel('facturation');
 
         $this->vCodProfileLogged = IdEnSession::getSession(DEFAULT_USER_AUTHENTICATE.'ProfileCode');
         $this->vCodUserLogged = IdEnSession::getSession(DEFAULT_USER_AUTHENTICATE.'UserCode');        
@@ -248,8 +249,7 @@ class insertController extends IdEnController
         }
     }
     
-    public function partnerApproveDebt()
-    {
+    public function partnerApproveDebt(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $vCodDebt = (int) $_POST['vCodDebt'];
@@ -275,7 +275,137 @@ class insertController extends IdEnController
             echo 'success';
         }
     }
+
+    //insert en la tabla clientes
+    public function registerClient() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+           echo($_POST);
+            $vNombres = (string) $_POST['vNombres'];
+            $vApellidos = (string) $_POST['vApellidos'];
+            $vDocumento = (string) $_POST['vDocumento'];
+            $vIDDocumento = 2;
+            $vComplemento = (string) $_POST['vComplemento'];
+            $vCorreo = (string) $_POST['vCorreo'];
+            $vMovil = (int) $_POST['vMovil'];
+            $vDireccion = $_POST['vDireccion'];
+            $vDescripcion = $_POST['vDescripcion'];
+            
+            // Inserta el cliente
+            $vInsertClient = $this->vFacturation->insertClient($vNombres, $vApellidos, $vIDDocumento, $vDocumento, $vComplemento, $vCorreo, $vMovil, $vDireccion, $vDescripcion);
+            
+            if ($vInsertClient) {
+                echo 'success';
+            } else {
+                echo 'error';
+            }
+        }     
+    }
+
+    //insert en la tabla brands - marcas
+    public function registerCategory() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+           echo($_POST);
+            $code_cat = (string) $_POST['code_cat'];
+            $descrp_cat = (string) $_POST['descrp_cat'];
+            $img_cat = (string) $_POST['img_cat'];
+            $codsin = (string) $_POST['codsin'];
+            $unities_cat = (string) $_POST['unities_cat'];
+      	
+            // Inserta la marca
+            $vInsertCategories = $this->vFacturation-> InsertBrand($code_cat, $descrp_cat, $vIDDocumento, $img_cat, $codsin, $unities_cat);
+            
+            if ($vInsertCategories) {
+                echo 'success';
+            } else {
+                echo 'error';
+            }
+        }     
+    }
+
+    //insert en la tabla brands - marcas
+    public function registerBrand() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+           echo($_POST);
+            $code_brand = (string) $_POST['code_brand'];
+            $description_brand = (string) $_POST['description_brand'];
+            $warranty_brand = (string) $_POST['warranty_brand'];
+            $vCompletime_warranty_brandmento = (string) $_POST['time_warranty_brand'];
+            $img_brand = (string) $_POST['img_brand'];
+      	
+            // Inserta la marca
+            $vInsertBrand = $this->vFacturation-> InsertBrand($code_brand, $description_brand, $vIDDocumento, $warranty_brand, $time_warranty_brand, $img_brand);
+            
+            if ($vInsertBrand) {
+                echo 'success';
+            } else {
+                echo 'error';
+            }
+        }     
+    }
+
+    public function registerProduct(){   
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            var_dump($_POST); 
+            $codigo_prod = (string) $_POST['codigo'];
+            $producto = preg_replace('/\s+/', ' ', $_POST['producto']);
+            $caracteristicas = preg_replace('/\s+/', ' ', $_POST['caracteristicas']);
+            $newName= 0;
     
+            $data = array(
+                'id_categoria' => $_POST['categoria'],
+                'id_marca' => $_POST['marca'],
+                'codigo' => $_POST['codigo'],
+                'codigo_alt' => $_POST['codigo_alt'],
+                'descripcion' => $_POST['producto'],
+                'caracteristica' => $_POST['caracteristica'],
+                'codsin' => $_POST['codsin'] ?? '',
+                'unidades' => $newName,
+                'imagen' => $newName,  
+                'precio' => $_POST['precio'] ?? 0,
+                'precio_compra' => $_POST['precio_compra'] ?? 0,
+                'usucre' => IdEnSession::getSession(DEFAULT_USER_AUTHENTICATE . 'UserCode'),
+                'garantia' => $_POST['guarantee'] ?? '',
+                'servicios' => $_POST['servicios'] ?? '',
+                'price_status' => $_POST['global_price'] ?? 'false',
+                'renovaciones' => $_POST['renovaciones'] ?? 'false',
+                'con_receta' => $_POST['receta'] ?? 'false'
+            );
+        
+
+            $adicionales = array();
+            $count0n = $_POST['count0'];
+            $conAddicionales = $_POST['con_adicionales'];
+    
+            if ($conAddicionales) {
+                for ($i = 0; $i <= $count0n; $i++) {
+                    if (isset($_POST['tipo' . $i]) && $_POST['tipo' . $i] != null) {
+                        $objeto = new stdClass();
+                        $objeto->tipo = $_POST['tipo' . $i];
+                        $objeto->detalle = $_POST['detalle' . $i];
+                        $adicionales[] = $objeto;
+                    }
+                }
+            }
+    
+            // Convertir los adicionales a formato JSON
+            $json = json_encode(array(
+                'adicionales' => $adicionales
+            ), JSON_UNESCAPED_UNICODE);
+            
+            $prod_insert = $this->vFacturation->insertProduct($data, $json);
+
+            if ($prod_insert[0]->oboolean == 't') {
+                $this->session->set_flashdata('success', 'Registro insertado exitosamente.');
+            } else {
+                $this->session->set_flashdata('error', $prod_insert[0]->omensaje);
+            }
+        }
+
+        // redirect('producto');
+    }
+    
+    
+
     public function consolidateBalance()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -470,5 +600,5 @@ class insertController extends IdEnController
         //} else {
         //    echo 'exists';
         //}
-    }    
+    }        
 }

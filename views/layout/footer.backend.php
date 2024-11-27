@@ -69,7 +69,15 @@
 		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/partners/debt.script.js"></script>
 		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/partners/payoffdebt.script.js"></script>
 		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/partners/dt.partners.script.js"></script>		
-
+		
+		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/registerClient.script.js"></script>
+		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/datatableClient.script.js"></script>
+		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/registerBrand.script.js"></script>
+		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/datatableBrand.script.js"></script>
+		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/registerCategory.script.js"></script>
+		<script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/registerProduct.script.js"></script>
+		
+		<!-- <script src="<?Php echo $vParamsViewBackEndLayout['root_backend_js'];?>custom/facturation/datatableBranch.script.js"></script> -->
 
 		<!--end::Javascript-->
 	</body>
